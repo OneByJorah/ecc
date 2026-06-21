@@ -1,6 +1,6 @@
-# ECC (ecc)
+# ecc — Agent Operating System
 
-**Version:** v0.1  
+**Version:** v2.0.0  
 **Status:** Active Development  
 **Repository:** https://github.com/OneByJorah/ecc
 
@@ -24,62 +24,78 @@
 
 ## Overview
 
-Error-correcting code utilities and data integrity tooling for systems operations.
+ecc is a harness-native agent operating system for Codex, OpenCode, Cursor, Gemini, Claude Code, and terminal workflows. It provides skills, hooks, rules, MCP conventions, and operator control-plane patterns in a single installable package.
+
+> Formerly described as error-correcting code utilities; the project has grown into a full agent/rules framework.
 
 ---
 
 ## Architecture
 
-Client → Local service (`ecc`) → data/processing modules → output/api layer.
-Secrets and environment configuration are managed via environment files with restrictive permissions.
+Client → agent runtime (Claude Code / Codex / OpenCode / Cursor / Gemini / terminal) → ecc assets (agents, skills, rules, hooks) → workspace integration (commands, plugins, MCP configs).
+
+State and context are managed via:
+- `AGENTS.md` and `WORKING-CONTEXT.md`
+- `agent.yaml` for global agent configuration
+- `ecc_dashboard.py` for visualization
 
 ---
 
 ## Technology Stack
 
-|| Layer | Stack |
+| Layer | Stack |
 |---|---|
-| Runtime | Linux (Ubuntu 22.04+) |
-| Primary Stack | Python / Data Processing |
+| Runtime | Node.js / Python |
+| Packaging | npm / pyproject.toml |
+| Config | YAML / JSON / Markdown |
+| Integrations | MCP, hooks, CLI shims |
+| Dashboard | Python (ecc_dashboard.py) |
 | VCS | Git + GitHub (`github.com/OneByJorah/ecc`) |
-| Dev Port | Localhost / systemd service |
 
 ---
 
 ## Features
 
-- Operational dashboard and monitoring (per repo).
-- Exportable data / reports where supported.
-- Extensible service-based design.
-- Dark-themed UI where applicable.
+- **Agent definitions**: 20+ specialized agents in `agents/` (security, code review, build error resolution, e2e, accessibility, etc.).
+- **Skills / rules**: reusable conventions under `skills/` and `rules/`.
+- **Hooks**: event-driven automation at startup and turn boundaries.
+- **MCP integration**: configs under `mcp-configs/` for model-context protocol servers.
+- **Multi-harness**: supports Codex, OpenCode, Cursor, Claude Code, Gemini, and terminal runs.
+- **Dashboard**: `ecc_dashboard.py` visualizes agent/rules state.
 
 ---
 
 ## Getting Started
 
 ```bash
-# 1. Clone the repository
+# 1. Clone
 git clone https://github.com/OneByJorah/ecc.git
 cd ecc
 
 # 2. Install dependencies
-# (see specific subproject docs)
+npm install
+# and/or
+pip install -e .
 
-# 3. Start the service
-# (see Service Management below)
+# 3. Install / bootstrap
+./install.sh
+# Windows:
+# .\\install.ps1
 ```
+
+Follow `CONTRIBUTING.md` and `DEVELOPMENT.md` for harness-specific setup.
 
 ---
 
 ## Service Management
 
 ```bash
-# Start the service (example)
-sudo systemctl start ecc.service
-sudo systemctl enable ecc.service
-```
+# Dashboard
+python ecc_dashboard.py
 
-Access the service via your configured localhost port or reverse proxy.
+# Agent invocation (CLI)
+# Use your harness CLI and point to this repo as the rules/skills root
+```
 
 ---
 
@@ -87,31 +103,47 @@ Access the service via your configured localhost port or reverse proxy.
 
 ```
 ecc/
-├── README.md
-├── (additional project files)
+├── agents/                    # Agent markdown definitions
+├── skills/                    # Skill packages
+├── rules/                     # Rule packs
+├── commands/                  # CLI commands
+├── hooks/                     # Lifecycle hooks
+├── mcp-configs/               # MCP server conformations
+├── integrations/              # Third-party integrations
+├── src/                       # Core source
+├── tests/                     # Test suite
+├── docs/
+├── ecc_dashboard.py
+├── agent.yaml
+├── AGENTS.md
+├── package.json
+├── pyproject.toml
+└── README.md
 ```
 
 ---
 
 ## Screenshots
 
-All screenshots are live captures from the local dev instance.
+### ecc
+![ecc](assets/hero.png)
 
-_(Screenshots will be added after build/run capture.)_
+### ECC Logo
+![ECC Logo](assets/images/ecc-logo.png)
 
 ---
 
 ## Contributing
 
 1. Create a feature branch off `main`.
-2. Follow the existing code style.
-3. Submit a PR with description and screenshots for UI changes.
+2. Follow `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md`.
+3. Run lint/tests before submitting a PR.
 
 ---
 
 ## License
 
-MIT
+MIT (unless otherwise noted in LICENSE)
 
 ---
 
